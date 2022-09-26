@@ -1,10 +1,17 @@
 import "./bootstrap";
+import "../css/app.css";
+import "../css/fonts.css";
 
+// Core
 import { createApp, h } from "vue";
 import { InertiaProgress } from "@inertiajs/progress";
 import { createInertiaApp } from "@inertiajs/inertia-vue3";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+
+// Theme
+import Theme from "./theme";
+import Inertable from "./@rizkhal/inertable-vue";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Presence";
@@ -32,6 +39,8 @@ createInertiaApp({
     },
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
+            .use(Theme)
+            .use(Inertable)
             .use(plugin)
             .use(ZiggyVue, Ziggy)
             .mount(el);

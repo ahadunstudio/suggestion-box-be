@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Inertable;
 
 use App\Models\Suggestion;
-use Illuminate\Database\Eloquent\Builder;
+use App\Abstracts\Inertable;
 use Rizkhal\Inertable\Column;
-use Rizkhal\Inertable\Inertable;
+use Illuminate\Database\Eloquent\Builder;
 
 class SuggestionTable extends Inertable
 {
@@ -24,6 +24,12 @@ class SuggestionTable extends Inertable
     {
         return [
             Column::make('id', 'id'),
+            Column::make('name', 'name')->searchable()->sortable(),
+            Column::make('email', 'email')->searchable()->sortable(),
+            Column::make('address', 'address')->searchable()->sortable(),
+            Column::make('suggestion', 'suggestion')->searchable()->sortable(),
+            Column::make('created_at', 'created_at')->searchable()->sortable()
+                ->format(fn($row) => $row->created_at->diffForHumans()),
         ];
     }
 }

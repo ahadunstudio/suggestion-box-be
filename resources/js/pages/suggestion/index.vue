@@ -7,8 +7,8 @@ defineProps({
 });
 
 onMounted(() => {
-  window.Echo.channel("suggestion")
-    .listen(".App\\Events\\SuggestionEvent",
+  window.Echo.channel("suggestion").listen(
+    ".App\\Events\\SuggestionEvent",
     (e) => {
       Inertia.reload({
         only: ["inertable"],
@@ -18,15 +18,9 @@ onMounted(() => {
 });
 </script>
 <template>
-  <div>
-    <h1 class="text-2xl bg-red-500">Suggestion Lists</h1>
-
-    <table>
-      <tbody>
-        <tr v-for="(item, index) in inertable.data.data" :key="index">
-          <td>{{ item }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="p-4 mx-auto">
+    <Inertable :data="inertable">
+      <!--  -->
+    </Inertable>
   </div>
 </template>
