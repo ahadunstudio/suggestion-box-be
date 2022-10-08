@@ -7,9 +7,13 @@ defineProps({
 });
 
 onMounted(() => {
+  console.log("mounted!");
+
   window.Echo.channel("suggestion").listen(
     ".App\\Events\\SuggestionEvent",
     (e) => {
+      console.log("updated!");
+
       Inertia.reload({
         only: ["inertable"],
       });
