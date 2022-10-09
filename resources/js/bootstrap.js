@@ -30,7 +30,7 @@ window.Echo = new Echo({
     wsPort: import.meta.env.VITE_PUSHER_PORT,
     wssPort: import.meta.env.VITE_PUSHER_PORT,
     encrypted: true,
-    forceTLS: true,
+    // forceTLS: true,
     enabledTransports: ["ws", "wss"],
     auth: {
         headers: {
