@@ -7,7 +7,7 @@ use App\Http\Controllers\Setting\UserController;
 use App\Http\Controllers\SuggestionController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', fn () => view('welcome'));
+Route::get('/', fn () => redirect()->route('auth.login'));
 
 // suggestion table for monitor (?)
 Route::get('suggestions', [ClientSuggestionController::class, 'index'])->name('suggestions.index');
