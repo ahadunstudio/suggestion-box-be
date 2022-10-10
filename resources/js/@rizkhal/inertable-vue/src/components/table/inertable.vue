@@ -27,6 +27,8 @@
             <Search v-model="params.search" />
           </div>
           <div class="flex items-center space-x-2 sm:space-x-3 ml-auto">
+            <slot name="attributes" />
+
             <template v-for="(action, index) in actions" :key="index">
               <button
                 type="button"
@@ -34,9 +36,9 @@
                 class="
                   w-1/2
                   text-white
-                  bg-cyan-600
-                  hover:bg-cyan-700
-                  focus:ring-4 focus:ring-cyan-200
+                  bg-indigo-600
+                  hover:bg-indigo-700
+                  focus:ring-4 focus:ring-indigo-200
                   font-medium
                   inline-flex
                   items-center
@@ -49,46 +51,51 @@
                   sm:w-auto
                 "
               >
-                {{ action.text }}
+                <component :is="action.icon" class="w-4 h-4" />
+                <span class="ml-2">{{ action.text }}</span>
               </button>
             </template>
 
             <div class="ml-3 relative" v-if="Object.keys(data.fields).length">
-              <Dropdown
-                align="right"
-                width="max"
-                content-classes="bg-white p-2"
-              >
+              <v-dropdown width="32" align="right">
                 <template #trigger>
-                  <span class="inline-flex rounded-md">
+                  <button class="btn-indigo">
+                    <FunnelIcon class="mr-2 h-4 w-4" />
+                    <span>Filter</span>
+                  </button>
+                </template>
+                <template #content>
+                  <div class="flex flex-col space-y-2 p-2">
+                    <template v-for="(field, key) in data.fields" :key="key">
+                      <template v-if="field.type === 'select'">
+                        <v-select
+                          class="w-64"
+                          :v-model="key"
+                          :label="data.fields[key].name"
+                          @change="handleOnSelectFilter($event, key, 'select')"
+                        >
+                          <option></option>
+                          <option
+                            v-for="(option, key) in field.attributes.options"
+                            :key="key"
+                            :value="option.value"
+                          >
+                            {{ option.label }}
+                          </option>
+                        </v-select>
+                      </template>
+                    </template>
+
                     <button
                       type="button"
-                      class="
-                        inline-flex
-                        items-center
-                        px-3
-                        py-2
-                        border border-transparent
-                        text-sm
-                        leading-4
-                        font-medium
-                        rounded-md
-                        text-white
-                        bg-cyan-600
-                        hover:text-cyan-200
-                        focus:outline-none
-                        transition
-                        ease-in-out
-                        duration-150
-                      "
+                      class="btn-red w-full"
+                      @click.prevent="handleOnClearFilter"
                     >
-                      Filter
-
-                      <FunnelIcon class="ml-2 -mr-0.5 h-4 w-4" />
+                      Bersihkan
                     </button>
-                  </span>
+                  </div>
                 </template>
-              </Dropdown>
+              </v-dropdown>
             </div>
           </div>
         </div>
@@ -101,9 +108,11 @@
             <table class="table-fixed min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-100">
                 <Column
-                  :columns="data.columns"
                   :params="params"
-                  @onSort="handleSort"
+                  :columns="data.columns"
+                  :selectAll="selectAll"
+                  @onSort="handleOnSort"
+                  @onSelectAll="handleOnSelectAll"
                 />
               </thead>
               <tbody
@@ -121,13 +130,16 @@
                         <input
                           :id="`checkbox-${id}`"
                           type="checkbox"
+                          @change="handleOnSelect"
+                          v-model="selected"
+                          :value="item[checkboxKey]"
                           class="
-                            bg-gray-50
-                            border-gray-300
-                            focus:ring-3 focus:ring-cyan-200
                             h-4
                             w-4
                             rounded
+                            bg-gray-50
+                            border-gray-300
+                            focus:ring-3 focus:ring-indigo-200
                           "
                         />
                         <label :for="`checkbox-${id}`" class="sr-only"
@@ -182,7 +194,7 @@
 <script>
 import { v4 as uuid } from "uuid";
 import { pickBy, throttle } from "lodash";
-import { FunnelIcon } from "@heroicons/vue/24/outline";
+import { FunnelIcon } from "@heroicons/vue/24/solid";
 
 // filter
 import Dropdown from "../filter/dropdown.vue";
@@ -208,9 +220,16 @@ export default {
   props: {
     data: Object,
     actions: [Array, Object],
+    checkboxKey: {
+      type: String,
+      default: "id",
+    },
   },
   data() {
     return {
+      selected: [],
+      selectAll: false,
+
       id: uuid(),
       perpages: [15, 30, 50],
       params: {
@@ -235,7 +254,7 @@ export default {
     };
   },
   methods: {
-    handleSort(column) {
+    handleOnSort(column) {
       if (!this.data.filters) return;
 
       this.params.column = column;
@@ -243,6 +262,46 @@ export default {
     },
     handleOnLoadPage(page) {
       this.params.page = page;
+    },
+    handleOnSelectFilter(event, key, type) {
+      if (this.params.filters) {
+        this.params.filters = Object.assign(this.params.filters, {
+          [key]: event.target.value,
+        });
+      } else {
+        this.params.filters = {
+          [key]: event.target.value,
+        };
+      }
+    },
+    handleOnClearFilter() {
+      if (this.params.filters) {
+        Object.keys(this.params.filters).some((value) => {
+          this.filtersModels[value] = null;
+        });
+
+        this.params.filters = null;
+      }
+    },
+    handleOnSelect() {
+      let selected = this.data.data.data.filter((value) =>
+        Object.values(this.selected).includes(value[this.checkboxKey])
+      );
+
+      this.$emit("on-select", selected);
+    },
+    handleOnSelectAll() {
+      let all = [];
+      this.selected = [];
+
+      if (!this.selectAll) {
+        for (let item in this.data.data.data) {
+          all.push(this.data.data.data[item]);
+          this.selected.push(this.data.data.data[item][this.checkboxKey]);
+        }
+      }
+
+      this.$emit("on-select-all", all);
     },
   },
   watch: {
@@ -255,6 +314,16 @@ export default {
           preserveState: true,
         });
       }, 100),
+      deep: true,
+    },
+    selected: {
+      handler: function () {
+        if (this.data.data.data.length != this.selected.length) {
+          this.selectAll = false;
+        } else {
+          this.selectAll = true;
+        }
+      },
       deep: true,
     },
   },

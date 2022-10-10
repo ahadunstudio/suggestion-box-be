@@ -4,15 +4,17 @@
       <th v-if="column.checkbox" scope="col" class="p-4 cursor-pointer">
         <div class="flex items-center">
           <input
-            :id="`checkbox-${id}`"
             type="checkbox"
+            v-model="selectAll"
+            :id="`checkbox-${id}`"
+            @change="$emit('onSelectAll')"
             class="
-              bg-gray-50
-              border-gray-300
-              focus:ring-3 focus:ring-cyan-200
               h-4
               w-4
               rounded
+              bg-gray-50
+              border-gray-300
+              focus:ring-3 focus:ring-cyan-200
             "
           />
           <label :for="`checkbox-${id}`" class="sr-only">checkbox</label>
@@ -78,17 +80,17 @@
     </template>
   </tr>
 </template>
-<script>
+<script setup>
+import { ref } from "vue";
 import { v4 as uuid } from "uuid";
 
-export default {
-  props: {
-    columns: Object,
-    params: Object,
-  },
-  emits: ["onSort"],
-  data: () => ({
-    id: uuid(),
-  }),
-};
+const id = ref(uuid());
+
+defineProps({
+  columns: Object,
+  params: Object,
+  selectAll: Boolean,
+});
+
+defineEmits(["onSort", "onSelectAll"]);
 </script>

@@ -17,7 +17,7 @@ defineProps({
         pt-16
         lg:flex
         flex-shrink-0 flex-col
-        w-64
+        w-60
         transition-width
         duration-75
       "

@@ -2,7 +2,8 @@
   <transition leave-active-class="duration-200">
     <div
       v-show="show"
-      class="fixed inset-0 overflow-y-auto px-4 py-6 sm:px-0 z-50"
+      :class="positionClass"
+      class="fixed overflow-y-auto px-4 py-6 sm:px-0 z-50"
     >
       <transition
         enter-active-class="ease-out duration-300"
@@ -41,6 +42,7 @@
             transform
             transition-all
             sm:w-full sm:mx-auto
+            max-w
           "
           :class="maxWidthClass"
         >
@@ -56,12 +58,22 @@ import { ref, computed } from "vue";
 
 const props = defineProps({
   dusk: "",
+  position: {
+    default: "top",
+  },
   maxWidth: {
-    default: "2xl",
+    default: "md",
   },
 });
 
 const show = ref(false);
+
+const positionClass = computed(() => {
+  return {
+    top: "inset-0",
+    center: "inset-52",
+  }[props.position];
+});
 
 const maxWidthClass = computed(() => {
   return {
@@ -70,6 +82,8 @@ const maxWidthClass = computed(() => {
     lg: "sm:max-w-lg",
     xl: "sm:max-w-xl",
     "2xl": "sm:max-w-2xl",
+    "4xl": "sm:max-w-4xl",
+    "7xl": "sm:max-w-7xl",
   }[props.maxWidth];
 });
 

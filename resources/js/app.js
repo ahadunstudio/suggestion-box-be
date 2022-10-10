@@ -12,12 +12,24 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 // Theme
 import Theme from "./theme";
 import Inertable from "./@rizkhal/inertable-vue";
+// Layouts
+import GuestLayout from "./theme/layouts/guest.vue";
+import AuthScreenLayout from "./theme/layouts/auth.vue";
+import AuthenticatedLayout from "./theme/layouts/authenticated.vue";
+
+import VueToast from "vue-toast-notification";
+import "vue-toast-notification/dist/theme-sugar.css";
 
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Presence";
 
 // separating layout here if u want
-// const guests = ["auth/login", "welcome"];
+const auths = ["auth/login"];
+const guests = [
+    "welcome",
+    "client/suggestion/index",
+    "client/suggestion/selected",
+];
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -27,13 +39,17 @@ createInertiaApp({
             import.meta.glob("./pages/**/*.vue")
         );
 
-        // if (guests.includes(name)) {
-        //     page.default.layout = GuestLayout;
-        // }
+        if (guests.includes(name)) {
+            page.default.layout = GuestLayout;
+        }
 
-        // if (page.default.layout === undefined) {
-        //     page.default.layout = AuthenticatedLayout;
-        // }
+        if (auths.includes(name)) {
+            page.default.layout = AuthScreenLayout;
+        }
+
+        if (page.default.layout === undefined) {
+            page.default.layout = AuthenticatedLayout;
+        }
 
         return page;
     },
@@ -43,6 +59,7 @@ createInertiaApp({
             .use(Inertable)
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(VueToast)
             .mount(el);
     },
 });
