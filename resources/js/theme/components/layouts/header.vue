@@ -7,6 +7,7 @@ import ResetPasswordModal from "./reset-password-modal.vue";
 
 const props = defineProps({
   user: Object,
+  state: Boolean,
 });
 </script>
 <template>
@@ -15,7 +16,7 @@ const props = defineProps({
       <div class="flex items-center justify-between">
         <div class="flex items-center justify-start">
           <button
-            id="toggleSidebarMobile"
+            @click.prevent="$emit('toggleSidebar')"
             aria-expanded="true"
             aria-controls="sidebar"
             class="
@@ -30,8 +31,9 @@ const props = defineProps({
               rounded
             "
           >
+            <!-- open -->
             <svg
-              id="toggleSidebarMobileHamburger"
+              v-if="!state"
               class="w-6 h-6"
               fill="currentColor"
               viewBox="0 0 20 20"
@@ -43,9 +45,11 @@ const props = defineProps({
                 clip-rule="evenodd"
               ></path>
             </svg>
+
+            <!-- close -->
             <svg
-              id="toggleSidebarMobileClose"
-              class="w-6 h-6 hidden"
+              v-else
+              class="w-6 h-6"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +61,7 @@ const props = defineProps({
               ></path>
             </svg>
           </button>
+
           <a href="#" class="text-xl font-bold flex items-center lg:ml-2.5">
             <div class="self-center ml-2">
               <span class="font-extrabold">EVENT&nbsp;</span>
@@ -64,6 +69,7 @@ const props = defineProps({
             </div>
           </a>
         </div>
+
         <div class="flex items-center">
           <v-dropdown width="48" align="right">
             <template #trigger>

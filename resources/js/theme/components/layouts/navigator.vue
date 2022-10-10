@@ -21,7 +21,7 @@ const active = (x) => {
 <template>
   <div>
     <ul class="space-y-2 pb-2">
-      <li>
+      <!-- <li>
         <form action="#" method="GET" class="lg:hidden">
           <label for="mobile-search" class="sr-only">Search</label>
           <div class="relative">
@@ -66,7 +66,7 @@ const active = (x) => {
             />
           </div>
         </form>
-      </li>
+      </li> -->
       <li v-for="(navigator, index) in menuItems" :key="index">
         <v-app-link
           v-if="!navigator.subItems.length"
