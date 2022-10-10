@@ -1,5 +1,6 @@
 <script setup>
 import { watch, ref } from "vue";
+import { Inertia } from "@inertiajs/inertia";
 import { useToast } from "vue-toast-notification";
 
 const toast = useToast();
@@ -11,6 +12,10 @@ const props = defineProps({
   flash: Object,
   navigators: String,
   breadcrumbs: Object,
+});
+
+Inertia.on("success", (event) => {
+  sidebarState.value = false;
 });
 
 watch(
