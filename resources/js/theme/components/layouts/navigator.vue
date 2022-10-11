@@ -1,77 +1,28 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref } from "vue";
 import { icon } from "./icons";
 
-const props = defineProps({
+defineProps({
   navigators: String,
 });
 
 const isOpen = ref([]);
-
-const menuItems = ref([]);
-
-onMounted(() => {
-  menuItems.value = JSON.parse(props.navigators);
-});
-
-const active = (x) => {
-  return route().current(x) ? "bg-gray-200" : "";
-};
 </script>
 <template>
   <div>
     <ul class="space-y-2 pb-2">
-      <!-- <li>
-        <form action="#" method="GET" class="lg:hidden">
-          <label for="mobile-search" class="sr-only">Search</label>
-          <div class="relative">
-            <div
-              class="
-                absolute
-                inset-y-0
-                left-0
-                pl-3
-                flex
-                items-center
-                pointer-events-none
-              "
-            >
-              <svg
-                class="w-5 h-5 text-gray-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
-                ></path>
-              </svg>
-            </div>
-            <input
-              type="text"
-              name="email"
-              id="mobile-search"
-              class="
-                bg-gray-50
-                border border-gray-300
-                text-gray-900 text-sm
-                rounded-lg
-                focus:ring-cyan-600
-                block
-                w-full
-                pl-10
-                p-2.5
-              "
-              placeholder="Search"
-            />
-          </div>
-        </form>
-      </li> -->
-      <li v-for="(navigator, index) in menuItems" :key="index">
+      <li v-for="(navigator, index) in JSON.parse(navigators)" :key="index">
         <v-app-link
           v-if="!navigator.subItems.length"
           :href="route().has(navigator.url) ? route(navigator.url) : '#'"
-          :class="active(navigator.url)"
+          :class="{
+            'bg-gray-200':
+              $page.url ===
+              `/` +
+                /(http[s]?:\/\/)?([^\/\s]+\/)(.*)/.exec(
+                  route(navigator.url)
+                )[3],
+          }"
           class="
             p-2
             flex
