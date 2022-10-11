@@ -1,31 +1,35 @@
 import { h, render } from "vue";
+import Dialog from "./Components/dialog.vue";
 import Default from "./Components/default.vue";
 
 let currentModal = null;
 
 export const useModal = (app, options) => {
-    const component = (props, child) => {
-        const node = h(Default, props, child);
-
-        if (app?._context) {
-            node.appContext = app._context;
-        }
-
-        currentModal = node;
-
-        render(node, document.body);
-
-        node.component.exposed.openModal();
-    };
-
     return {
         open(props) {
-            const childComponent = () => h(props.component, props);
+            let filteredProps = Object.keys(props)
+                .filter((key) => key !== "component")
+                .reduce((obj, key) => {
+                    obj[key] = props[key];
+                    return obj;
+                }, {});
 
-            component(props, childComponent);
+            const child = () => h(props.component, filteredProps);
+
+            const node = h(Default, filteredProps, () => [h(child)]);
+
+            if (app?._context) {
+                node.appContext = app._context;
+            }
+
+            render(node, document.body);
+
+            node.component.exposed.openModal();
+
+            currentModal = node.component;
         },
         close() {
-            currentModal.component.exposed.closeModal();
+            currentModal.exposed.closeModal();
         },
     };
 };
@@ -33,6 +37,8 @@ export const useModal = (app, options) => {
 export default {
     install: (app, options) => {
         const instance = useModal(app, options);
+
+        app.component("modal-dialog", Dialog);
 
         app.config.globalProperties.$modal = instance;
         app.provide("$modal", instance);

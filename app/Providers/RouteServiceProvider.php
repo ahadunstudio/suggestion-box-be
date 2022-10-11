@@ -17,7 +17,16 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    public const HOME = '/admin/dashboard';
+
+    /**
+     * The route to the "login" route for your application.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const LOGIN = 'auth.login';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
@@ -37,7 +46,9 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')
                 ->group(fn () => [
-                    require base_path('routes/web/v1.php')
+                    require base_path('routes/web/v1.php'),
+                    require base_path('routes/web/auth.php'),
+                    require base_path('routes/web/breadcrumbs.php')
                 ]);
         });
     }

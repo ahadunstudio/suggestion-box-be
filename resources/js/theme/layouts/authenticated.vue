@@ -1,14 +1,21 @@
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { watch, ref } from "vue";
+import { Inertia } from "@inertiajs/inertia";
 import { useToast } from "vue-toast-notification";
 
 const toast = useToast();
+
+const sidebarState = ref(false);
 
 const props = defineProps({
   auth: Object,
   flash: Object,
   navigators: String,
   breadcrumbs: Object,
+});
+
+Inertia.on("success", (event) => {
+  sidebarState.value = false;
 });
 
 watch(
@@ -45,10 +52,14 @@ watch(
 </script>
 <template>
   <div>
-    <Header :user="auth.user" :type="auth.user_type" />
+    <Header
+      :user="auth.user"
+      :state="sidebarState"
+      @toggleSidebar="sidebarState = !sidebarState"
+    />
 
     <div class="flex overflow-hidden bg-white pt-16">
-      <Sidebar :navigators="navigators" />
+      <Sidebar :state="sidebarState" :navigators="navigators" />
 
       <div
         id="main-content"

@@ -2,8 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Tightenco\Ziggy\Ziggy;
+use Illuminate\Http\Request;
+use App\Facades\Navigator as Nav;
+use Tabuna\Breadcrumbs\Breadcrumbs;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -37,7 +40,22 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            //
+            'auth' => [
+                'user' => $request->user() ? $request->user() : null,
+            ],
+            'ziggy' => function () use ($request) {
+                return array_merge((new Ziggy)->toArray(), [
+                    'location' => $request->url(),
+                ]);
+            },
+            'navigators' => Nav::toJson(),
+            'breadcrumbs' => Breadcrumbs::current(),
+            'flash' => fn (): array => [
+                'success' => $request->session()->get('success'),
+                'info' => $request->session()->get('info'),
+                'warning' => $request->session()->get('warning'),
+                'error' => $request->session()->get('error'),
+            ],
         ]);
     }
 }

@@ -1,10 +1,6 @@
 import { id } from "date-fns/locale";
 import { differenceInDays, format, formatDistanceStrict } from "date-fns";
 
-export const LAT = -5.13687995781081;
-export const LNG = 119.43983212118358;
-export const RADIUS = 100;
-
 export function formateDate(date, formatType = "yyyy-MM-dd") {
     const newDate = new Date(date);
 

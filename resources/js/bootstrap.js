@@ -26,11 +26,10 @@ window.Pusher = Pusher;
 window.Echo = new Echo({
     broadcaster: "pusher",
     key: import.meta.env.VITE_PUSHER_APP_KEY,
-    wsHost: import.meta.env.VITE_WS_URL,
-    wsPort: 6001,
-    wssPort: 6001,
-    forceTLS: true,
-    disableStats: true,
+    wsHost: window.location.hostname,
+    wsPort: import.meta.env.VITE_PUSHER_PORT,
+    wssPort: import.meta.env.VITE_PUSHER_PORT,
+    encrypted: true,
     enabledTransports: ["ws", "wss"],
     auth: {
         headers: {

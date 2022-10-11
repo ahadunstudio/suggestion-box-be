@@ -22,11 +22,18 @@ import Modal from "./lib/modal";
 import Alert from "./components/common/alert.vue";
 import Badge from "./components/common/badge.vue";
 import NotAvailable from "./components/common/na.vue";
+import LoadingButton from "./components/common/loading-button.vue";
+import Dropdown from "./components/common/dropdown.vue";
+import DropdownLink from "./components/common/dropdown-link.vue";
+import DropdownButton from "./components/common/dropdown-button.vue";
 
-export const guests = ["auth/login", "welcome"];
+import WebsocketView from "~/components/ws-view.vue";
 
 export default {
     install(app, config) {
+        // custom webscoket view
+        app.component("v-ws-view", WebsocketView);
+
         // inertia
         app.component("v-app-link", Link);
 
@@ -51,5 +58,9 @@ export default {
         app.component("v-alert", Alert);
         app.component("v-badge", Badge);
         app.component("v-na", NotAvailable);
+        app.component("v-button", LoadingButton);
+        app.component("v-dropdown", Dropdown);
+        app.component("v-dropdown-link", DropdownLink);
+        app.component("v-dropdown-button", DropdownButton);
     },
 };

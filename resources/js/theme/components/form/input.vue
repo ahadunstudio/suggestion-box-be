@@ -25,7 +25,7 @@
         bg-gray-50
         text-gray-900
         border border-gray-300
-        focus:ring-cyan-600 focus:border-cyan-600
+        focus:ring-indigo-600 focus:border-indigo-600
         disabled:cursor-not-allowed disabled:bg-gray-200
       "
     />

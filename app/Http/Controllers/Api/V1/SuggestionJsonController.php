@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Events\SuggestionEvent;
 use App\Models\Suggestion;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\SuggestionRequest;
+use App\Http\Requests\Client\SuggestionRequest;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
