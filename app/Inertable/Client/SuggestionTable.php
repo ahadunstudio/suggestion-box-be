@@ -37,7 +37,6 @@ class SuggestionTable extends Inertable
             Column::make('id', 'id'),
             Column::make('nama', 'name')->searchable()->sortable(),
             Column::make('email', 'email')->searchable()->sortable(),
-            Column::make('alamat', 'address')->searchable()->sortable(),
             Column::make('masukan', 'suggestion')->searchable()->sortable(),
             Column::make('dibuat', 'created_at')->searchable()->sortable()
                 ->format(fn ($row) => $row->created_at->diffForHumans()),
