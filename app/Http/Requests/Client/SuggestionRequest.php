@@ -12,9 +12,22 @@ class SuggestionRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'name' => 'Nama',
+            'suggestion' => 'Masukan',
+        ];
     }
 
     /**
@@ -22,12 +35,11 @@ class SuggestionRequest extends FormRequest
      *
      * @return array<string, mixed>
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required'],
             'email' => ['required', 'email', Rule::unique('suggestions', 'email')],
-            'address' => ['required'],
             'suggestion' => ['required'],
         ];
     }
