@@ -26,7 +26,7 @@ class SuggestionRequest extends FormRequest
     {
         return [
             'name' => 'Nama',
-            'suggestion' => 'Masukan',
+            'suggestion' => 'Wishers / Harapan RKAP 2023',
         ];
     }
 
