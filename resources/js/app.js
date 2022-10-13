@@ -28,6 +28,7 @@ const auths = ["auth/login"];
 const guests = [
     "welcome",
     "client/suggestion/index",
+    "client/suggestion/index2",
     "client/suggestion/selected",
 ];
 
