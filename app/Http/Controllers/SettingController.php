@@ -6,12 +6,14 @@ use App\Events\RouterEvent;
 use App\Models\SuggestionSetting;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\SettingRequest;
+use App\Models\Setting\File;
 
 class SettingController extends Controller
 {
     public function index()
     {
         return inertia('setting/index', [
+            'file_setting' => File::first(),
             'setting' => SuggestionSetting::first(),
         ])->title('Pengaturan');
     }

@@ -1,6 +1,17 @@
 import { id } from "date-fns/locale";
 import { differenceInDays, format, formatDistanceStrict } from "date-fns";
 
+export function slugify(text) {
+    return text
+        .toString()
+        .toLowerCase()
+        .replace(/^-+/, "")
+        .replace(/-+$/, "")
+        .replace(/\s+/g, "-")
+        .replace(/\-\-+/g, "-")
+        .replace(/[^\w\-]+/g, "");
+}
+
 export function formateDate(date, formatType = "yyyy-MM-dd") {
     const newDate = new Date(date);
 

@@ -4,6 +4,8 @@ import {
     BookmarkSquareIcon,
 } from "@heroicons/vue/24/outline";
 
+export const APP_URL = import.meta.env.VITE_APP_URL;
+
 export const options = [
     {
         value: 1,
