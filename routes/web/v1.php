@@ -20,7 +20,8 @@ Route::middleware('auth')->prefix('admin')->as('admin.')->group(function () {
     Route::get('dashboard', DashboardController::class)->name('dashboard');
     Route::get('suggestions', [SuggestionController::class, 'index'])->name('suggestions.index');
     Route::delete('suggestions/delete', [SuggestionController::class, 'delete'])->name('suggestions.delete');
-    Route::post('suggestions/status', [SuggestionController::class, 'status'])->name('suggestions.store.status');
+    Route::post('suggestions/status', [SuggestionController::class, 'statuses'])->name('suggestions.store.status');
+    Route::post('suggestions/display/{suggestion:id}', [SuggestionController::class, 'status'])->name('suggestions.store.display');
 
     // setting user credentials
     Route::post('setting/password', [UserController::class, 'password'])->name('setting.password');

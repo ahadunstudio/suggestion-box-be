@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Suggestion;
 use Illuminate\Http\Request;
 use App\Enums\SuggestionStatus;
+use App\Events\SuggestionSelectedEvent;
 use App\Inertable\SuggestionTable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\SuggestionStatusRequest;
-use App\Models\Suggestion;
 
 class SuggestionController extends Controller
 {
@@ -18,7 +19,7 @@ class SuggestionController extends Controller
             ->inertable(new SuggestionTable)->title('Kelola Masukan');
     }
 
-    public function status(SuggestionStatusRequest $request)
+    public function statuses(SuggestionStatusRequest $request)
     {
         DB::transaction(function () use ($request) {
             $request->getSuggestions()->update([
@@ -27,6 +28,23 @@ class SuggestionController extends Controller
         });
 
         return back()->success(__("Berhasil mengatur status masukan."));
+    }
+
+    public function status(Suggestion $suggestion)
+    {
+        DB::transaction(function () use ($suggestion) {
+            Suggestion::query()->selected()->where('id', '!=', $suggestion->id)->update([
+                'status' => SuggestionStatus::NOT_SELECTED(),
+            ]);
+
+            $suggestion->update([
+                'status' => SuggestionStatus::SELECTED(),
+            ]);
+
+            event(new SuggestionSelectedEvent($suggestion));
+        });
+
+        return back()->success(__("Berhasil mengatur pilihan."));
     }
 
     public function delete(Request $request)

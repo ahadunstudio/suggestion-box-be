@@ -30,6 +30,7 @@ const guests = [
     "client/suggestion/index",
     "client/suggestion/index2",
     "client/suggestion/selected",
+    "client/suggestion/selected2",
 ];
 
 createInertiaApp({

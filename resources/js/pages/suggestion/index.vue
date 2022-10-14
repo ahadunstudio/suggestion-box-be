@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import {
+  EyeIcon,
   TrashIcon,
   Cog6ToothIcon,
   PencilSquareIcon,
 } from "@heroicons/vue/24/solid";
+import { Inertia } from "@inertiajs/inertia";
 import { ModalDialog, StatusModal } from "./modal.js";
 
 const selected = ref([]);
@@ -52,7 +54,7 @@ defineProps({
                   <span>Hapus</span>
                 </v-dropdown-button>
 
-                <v-dropdown-button
+                <!-- <v-dropdown-button
                   @click.prevent="
                     $modal.open({
                       statuses,
@@ -65,7 +67,7 @@ defineProps({
                 >
                   <PencilSquareIcon class="w-4 h-4" />
                   <span>Ubah Status</span>
-                </v-dropdown-button>
+                </v-dropdown-button> -->
               </div>
             </template>
           </v-dropdown>
@@ -77,6 +79,34 @@ defineProps({
           :value="status.label"
           :color="status.value == 1 ? 'red' : 'indigo'"
         />
+      </template>
+
+      <template #action="{ item }">
+        <div class="w-max">
+          <v-app-link
+            as="button"
+            :disabled="item.status.value != 1"
+            @click="
+              Inertia.post(
+                route('admin.suggestions.store.display', {
+                  suggestion: item.id,
+                })
+              )
+            "
+            class="
+              p-2
+              rounded-md
+              focus:ring-2
+              bg-indigo-600
+              text-white text-xs
+              disabled:bg-opacity-70 disabled:cursor-not-allowed
+              focus:ring-indigo-500 focus:outline-none focus:ring-offset-2
+            "
+          >
+            <span v-if="item.status.value != 1">Ditampilkan</span>
+            <span v-else>Tampilkan</span>
+          </v-app-link>
+        </div>
       </template>
     </Inertable>
   </div>

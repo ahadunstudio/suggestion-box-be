@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DisplayStatus;
 use App\Enums\SuggestionStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;

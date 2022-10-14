@@ -10,8 +10,8 @@ const item = ref(null);
 onMounted(() => {
   animate(canvas);
 
-  window.Echo.channel("suggestion").listen(
-    ".App\\Events\\SuggestionEvent",
+  window.Echo.channel("suggestion-selected").listen(
+    ".App\\Events\\SuggestionSelectedEvent",
     ({ suggestion }) => {
       item.value = suggestion;
     }
