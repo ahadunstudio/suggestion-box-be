@@ -1,48 +1,50 @@
-<template>
-  <div
-    class="
-      flex
-      w-full
-      h-screen
-      items-center
-      overflow-auto
-      justify-center
-      text-white text-center
-    "
-  >
-    <canvas ref="canvas"></canvas>
-    <div class="flex flex-col space-y-2">
-      <h1>
-        {{ item.suggestion }}
-      </h1>
-      <span class="text-[2em]">{{ item.name }}</span>
-    </div>
-  </div>
-</template>
 <script setup>
+import { ref, onMounted } from "vue";
 import animate from "~/utils/animate";
-import { Inertia } from "@inertiajs/inertia";
-import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const canvas = ref(null);
-const polling = ref(null);
 
-const props = defineProps({
-  item: Object,
-});
+const item = ref(null);
 
 onMounted(() => {
   animate(canvas);
 
-  polling.value = setInterval(() => {
-    Inertia.visit(`/suggestions?id=${props.item?.id}`, {
-      only: ["item"],
-    });
-  }, 7000);
+  window.Echo.channel("suggestion").listen(
+    ".App\\Events\\SuggestionEvent",
+    ({ suggestion }) => {
+      item.value = suggestion;
+    }
+  );
 });
-
-onBeforeUnmount(() => clearInterval(polling.value));
 </script>
+<template>
+  <div class="w-full h-full overflow-auto relative">
+    <div class="flex justify-center absolute z-50 top-8 inset-x-0">
+      <img src="../../../../assets/img/pk.png" alt="Logo" class="w-[45em]" />
+    </div>
+    <div
+      class="
+        flex
+        w-full
+        h-screen
+        items-center
+        justify-center
+        text-white text-center
+      "
+    >
+      <canvas ref="canvas"></canvas>
+      <div class="flex flex-col space-y-2">
+        <h1 class="text-[5em]">
+          <span v-if="item">{{ item.suggestion }}</span>
+          <span v-else>Selamat Datang di Acara Raker Korporat</span>
+        </h1>
+        <span v-if="item" class="text-[1.5em]">
+          {{ item.name }}
+        </span>
+      </div>
+    </div>
+  </div>
+</template>
 <style lang="css" scoped>
 * {
   padding: 0;

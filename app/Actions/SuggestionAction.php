@@ -3,19 +3,11 @@
 namespace App\Actions;
 
 use App\Models\Suggestion;
-use Illuminate\Database\Eloquent\Builder;
 
 class SuggestionAction
 {
-    public static function execute(int | null $id = null)
+    public static function execute()
     {
-        $query = Suggestion::query()
-            ->when(
-                $id,
-                fn (Builder $query, int $id) => $query->whereId($id + 1),
-                fn (Builder $query) => $query->orderBy('created_at', 'desc')
-            )->first();
-
-        return $query ? $query : Suggestion::query()->orderBy('created_at', 'desc')->first();
+        return Suggestion::query()->orderBy('created_at', 'desc')->first();
     }
 }
