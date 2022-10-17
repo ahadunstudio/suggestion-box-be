@@ -3,7 +3,7 @@ import { ref, onMounted } from "vue";
 import animate from "~/utils/animate";
 import WsView from "~/components/ws-view.vue";
 
-const TIMEOUT = 70000; // 7 seconds
+const TIMEOUT = 7000; // 7 seconds
 
 const canvas = ref(null);
 
