@@ -3,8 +3,10 @@ import { useForm } from "@inertiajs/inertia-vue3";
 import { LockClosedIcon } from "@heroicons/vue/24/solid";
 
 const form = useForm({
-  email: "test@mail.com",
-  password: "password",
+  // test@mail.com
+  // password
+  email: null,
+  password: null,
 });
 </script>
 <template>
