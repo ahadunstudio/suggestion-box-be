@@ -39,7 +39,7 @@ class SuggestionTable extends Inertable
             ]),
             Column::make('created_at', 'created_at')->searchable()->sortable()
                 ->format(fn ($row) => $row->created_at->diffForHumans()),
-            Column::make('Aksi', 'action'),
+            // Column::make('Aksi', 'action'),
         ];
     }
 

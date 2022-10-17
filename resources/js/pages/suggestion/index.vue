@@ -54,7 +54,7 @@ defineProps({
                   <span>Hapus</span>
                 </v-dropdown-button>
 
-                <!-- <v-dropdown-button
+                <v-dropdown-button
                   @click.prevent="
                     $modal.open({
                       statuses,
@@ -67,7 +67,7 @@ defineProps({
                 >
                   <PencilSquareIcon class="w-4 h-4" />
                   <span>Ubah Status</span>
-                </v-dropdown-button> -->
+                </v-dropdown-button>
               </div>
             </template>
           </v-dropdown>

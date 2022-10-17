@@ -1,11 +1,15 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watch } from "vue";
 import animate from "~/utils/animate";
 import WsView from "~/components/ws-view.vue";
+
+const TIMEOUT = 30 * 1000; // 30 seconds
 
 const canvas = ref(null);
 
 const item = ref(null);
+
+const isDefault = ref(true);
 
 onMounted(() => {
   animate(canvas);
@@ -14,12 +18,27 @@ onMounted(() => {
     ".App\\Events\\SuggestionEvent",
     ({ suggestion }) => {
       item.value = suggestion;
+      isDefault.value = false;
     }
   );
 });
+
+watch(
+  () => isDefault,
+  (newValue, oldValue) => {
+    setTimeout(() => {
+      isDefault.value = true;
+    }, TIMEOUT);
+  },
+  {
+    deep: true,
+  }
+);
 </script>
 <template>
   <WsView>
+    <Card :item="item" :isDefault="isDefault" />
+
     <div class="w-full h-full overflow-auto relative">
       <div class="flex justify-center absolute z-50 top-8 inset-x-0">
         <img src="../../../../assets/img/pk.png" alt="Logo" class="w-[45em]" />
@@ -35,10 +54,16 @@ onMounted(() => {
         "
       >
         <canvas ref="canvas"></canvas>
-        <div class="flex flex-col space-y-2">
+
+        <div v-if="isDefault" class="flex flex-col space-y-2">
+          <h1 class="text-[5em]">
+            <span>Selamat Datang di Acara Raker Korporat</span>
+          </h1>
+        </div>
+
+        <div v-else class="flex flex-col space-y-2">
           <h1 class="text-[5em]">
             <span v-if="item">{{ item.suggestion }}</span>
-            <span v-else>Selamat Datang di Acara Raker Korporat</span>
           </h1>
           <span v-if="item" class="text-[1.5em]">
             {{ item.name }}

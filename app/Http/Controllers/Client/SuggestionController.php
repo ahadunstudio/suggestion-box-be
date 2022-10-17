@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Models\Suggestion;
 use Illuminate\Routing\Controller;
 
 class SuggestionController extends Controller
@@ -13,6 +14,8 @@ class SuggestionController extends Controller
 
     public function selected()
     {
-        return inertia('client/suggestion/selected2');
+        return inertia('client/suggestion/selected2', [
+            'items' => Suggestion::query()->selected()->get(),
+        ]);
     }
 }

@@ -3,26 +3,33 @@ import { ref, onMounted } from "vue";
 import animate from "~/utils/animate";
 import WsView from "~/components/ws-view.vue";
 
+const TIMEOUT = 10 * 1000; // 10 seconds
+
 const canvas = ref(null);
+
+const props = defineProps({
+  items: Object,
+});
 
 const item = ref(null);
 
 onMounted(() => {
   animate(canvas);
 
-  window.Echo.channel("suggestion-selected").listen(
-    ".App\\Events\\SuggestionSelectedEvent",
-    ({ suggestion }) => {
-      item.value = suggestion;
-    }
-  );
+  setInterval(() => {
+    item.value = props.items[Math.floor(Math.random() * props.items.length)];
+  }, TIMEOUT);
 });
 </script>
 <template>
   <WsView>
     <div class="w-full h-full overflow-auto relative">
       <div class="flex justify-center absolute z-50 top-8 inset-x-0">
-        <img src="../../../../assets/img/pk.png" alt="Logo" class="w-[45em]" />
+        <img
+          alt="Logo"
+          class="lg:w-[45em] w-[20em]"
+          src="../../../../assets/img/pk.png"
+        />
       </div>
       <div
         class="
