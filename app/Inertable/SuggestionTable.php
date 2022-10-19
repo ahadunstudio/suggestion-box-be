@@ -31,7 +31,9 @@ class SuggestionTable extends Inertable
         return [
             Column::checkbox(),
             Column::make('nama', 'name')->searchable()->sortable(),
-            Column::make('email', 'email')->searchable()->sortable(),
+            Column::make('npk', 'npk')->searchable()->sortable(),
+            Column::make('unit', 'unit')->searchable()->sortable(),
+            Column::make('nomor hp', 'phone_number')->searchable()->sortable(),
             Column::make('Wishers / Harapan RKAP 2023', 'suggestion')->searchable()->sortable(),
             Column::make('status', 'status')->searchable()->sortable()->format(fn ($row) => [
                 'value' => $row->status->value,
