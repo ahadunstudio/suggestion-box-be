@@ -26,6 +26,7 @@ class SuggestionRequest extends FormRequest
     {
         return [
             'name' => 'Nama',
+            'phone_number' => 'Nomor hp',
             'suggestion' => 'Wishers / Harapan RKAP 2023',
         ];
     }
@@ -39,7 +40,9 @@ class SuggestionRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'email' => ['required', 'email', Rule::unique('suggestions', 'email')],
+            'phone_number' => ['required'],
+            'npk' => ['required'],
+            'unit' => ['required'],
             'suggestion' => ['required'],
         ];
     }
