@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\SuggestionStatus;
+use App\Enums\Participant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -11,27 +11,16 @@ class Suggestion extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'status' => SuggestionStatus::class,
+        'participant' => Participant::class,
     ];
 
-    public static function boot()
+    public function scopeOnline(Builder $query): void
     {
-        parent::boot();
-
-        static::creating(function (Model $model) {
-            $model->fill([
-                'status' => SuggestionStatus::NOT_SELECTED(),
-            ]);
-        });
+        $query->where('status', Participant::ONLINE());
     }
 
-    public function scopeSelected(Builder $query): void
+    public function scopeOffline(Builder $query): void
     {
-        $query->where('status', SuggestionStatus::SELECTED());
-    }
-
-    public function scopeNotSelected(Builder $query): void
-    {
-        $query->where('status', SuggestionStatus::NOT_SELECTED());
+        $query->where('status', Participant::OFFLINE());
     }
 }

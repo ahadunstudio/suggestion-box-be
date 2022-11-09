@@ -3,8 +3,6 @@
 namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
-
 class SuggestionRequest extends FormRequest
 {
     /**
@@ -40,10 +38,10 @@ class SuggestionRequest extends FormRequest
     {
         return [
             'name' => ['required'],
-            'phone_number' => ['required'],
-            'npk' => ['required'],
+            'nip' => ['required'],
+            'rank' => ['required'],
             'unit' => ['required'],
-            'suggestion' => ['required'],
+            'participant' => ['required'],
         ];
     }
 }

@@ -15,13 +15,9 @@ class NavigatorServiceProvider extends ServiceProvider
                     ->for('admin.dashboard')
                     ->icon('HomeIcon'),
 
-                Nav::item(__('Masukan'))
+                Nav::item(__('Peserta'))
                     ->for('admin.suggestions.index')
-                    ->icon('InboxIcon'),
-
-                Nav::item(__('Pengaturan'))
-                    ->for('admin.setting.index')
-                    ->icon('Cog6ToothIcon'),
+                    ->icon('UserGroupIcon'),
             ];
         });
     }

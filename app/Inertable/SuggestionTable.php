@@ -6,7 +6,7 @@ namespace App\Inertable;
 
 use App\Models\Suggestion;
 use App\Abstracts\Inertable;
-use App\Enums\SuggestionStatus;
+use App\Enums\Participant;
 use Rizkhal\Inertable\Column;
 use App\Overrides\Inertable\Filter;
 use Illuminate\Database\Eloquent\Builder;
@@ -21,8 +21,8 @@ class SuggestionTable extends Inertable
                 fn (Builder $query) => $query->orderBy('created_at', 'desc')
             )
             ->when(
-                $this->getFilter('status'),
-                fn (Builder $query, $status) => $query->where('status', $status)
+                $this->getFilter('participant'),
+                fn (Builder $query, $participant) => $query->where('participant', $participant)
             );
     }
 
@@ -31,24 +31,22 @@ class SuggestionTable extends Inertable
         return [
             Column::checkbox(),
             Column::make('nama', 'name')->searchable()->sortable(),
-            Column::make('npk', 'npk')->searchable()->sortable(),
+            Column::make('nip', 'nip')->searchable()->sortable(),
             Column::make('unit', 'unit')->searchable()->sortable(),
-            Column::make('nomor hp', 'phone_number')->searchable()->sortable(),
-            Column::make('Wishers / Harapan RKAP 2023', 'suggestion')->searchable()->sortable(),
-            Column::make('status', 'status')->searchable()->sortable()->format(fn ($row) => [
-                'value' => $row->status->value,
-                'label' => $row->status->label(),
+            Column::make('jabatan', 'rank')->searchable()->sortable(),
+            Column::make('peserta', 'participant')->searchable()->sortable()->format(fn ($row) => [
+                'value' => $row->participant->value,
+                'label' => $row->participant->label(),
             ]),
             Column::make('created_at', 'created_at')->searchable()->sortable()
                 ->format(fn ($row) => $row->created_at->diffForHumans()),
-            // Column::make('Aksi', 'action'),
         ];
     }
 
     public function fields(): array
     {
         return [
-            'status' => Filter::make('Status')->select()->setAttributes(SuggestionStatus::labels()),
+            'participant' => Filter::make('Status')->select()->setAttributes(Participant::labels()),
         ];
     }
 }

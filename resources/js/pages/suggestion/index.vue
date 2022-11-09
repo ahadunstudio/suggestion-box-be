@@ -74,10 +74,10 @@ defineProps({
         </div>
       </template>
 
-      <template #status="{ item: { status } }">
+      <template #participant="{ item: { participant } }">
         <v-badge
-          :value="status.label"
-          :color="status.value == 1 ? 'red' : 'indigo'"
+          :value="participant.label"
+          :color="participant.value == 1 ? 'green' : 'indigo'"
         />
       </template>
 

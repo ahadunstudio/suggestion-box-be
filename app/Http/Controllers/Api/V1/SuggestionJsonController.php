@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Events\SuggestionEvent;
 use App\Models\Suggestion;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Client\SuggestionRequest;
@@ -15,8 +14,6 @@ class SuggestionJsonController extends Controller
     {
         return DB::transaction(function () use ($request) {
             $suggestion = Suggestion::create($request->validated());
-
-            event(new SuggestionEvent($suggestion));
 
             return response()->json([
                 'success' => true,

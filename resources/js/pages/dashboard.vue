@@ -1,6 +1,6 @@
 <script setup>
 import { formatNumber } from "~/utils/helpers";
-import { InboxIcon } from "@heroicons/vue/24/solid";
+import { UserGroupIcon } from "@heroicons/vue/24/solid";
 
 defineProps({
   cards: Object,
@@ -17,7 +17,7 @@ defineProps({
         class="flex items-center p-2 bg-gray-50 rounded-lg shadow border"
       >
         <div class="p-3 mr-4 rounded-md text-indigo-500 bg-indigo-100">
-          <InboxIcon class="w-5 h-5" />
+          <UserGroupIcon class="w-5 h-5" />
         </div>
         <div class="flex flex-col mt-2">
           <p class="mb-2 text-xs font-medium text-gray-600">{{ item.label }}</p>

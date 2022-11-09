@@ -18,19 +18,19 @@ class DashboardController extends Controller
     {
         return [
             [
+                'color' => 'green',
+                'label' => 'Total Peserta Online',
+                'value' => Suggestion::query()->online()->count(),
+            ],
+            [
                 'color' => 'indigo',
-                'label' => 'Total Masukan',
-                'value' => Suggestion::count(),
+                'label' => 'Total Peserta Offline',
+                'value' => Suggestion::query()->offline()->count(),
             ],
             [
                 'color' => 'blue',
-                'label' => 'Masukan Dipilih',
-                'value' => Suggestion::query()->selected()->count(),
-            ],
-            [
-                'color' => 'red',
-                'label' => 'Masukan Tidak Dipilih',
-                'value' => Suggestion::query()->notSelected()->count(),
+                'label' => 'Total Peserta',
+                'value' => Suggestion::query()->count(),
             ]
         ];
     }
